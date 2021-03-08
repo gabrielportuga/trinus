@@ -6,6 +6,6 @@
 This is a trip planner from Trinus.
 </h3>
 <p align="center">
-<img src="./assets/splash.ico" />
+<img src="./assets/icon.png" />
 </p>
 # trinus
