@@ -24,7 +24,7 @@ export const TripPlans = (props: Props) => {
     .string();
 
   return (
-    <TouchableRipple onPress={() => navigation.navigate("Details", props) }>
+    <TouchableRipple onPress={() => navigation.navigate("CreateTripEvent", props) }>
     <Surface style={styles.container}>
       <View style={styles.leftColumn}>
         <MaterialCommunityIcons

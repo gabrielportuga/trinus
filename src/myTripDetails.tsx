@@ -1,7 +1,7 @@
 import color from 'color';
-import React from 'react';
-import { Dimensions } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import React, { useEffect } from 'react';
+import { Dimensions, StyleSheet } from 'react-native';
+import { FAB, useTheme } from 'react-native-paper';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { Events } from './events';
 import { Informations } from './informations';
@@ -9,7 +9,7 @@ import overlay from './overlay';
 
 const initialLayout = { width: Dimensions.get('window').width };
 
-export const MyTripDetails = () => {
+export const MyTripDetails = ({ navigation, route }) => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'events', title: 'Eventos' },
@@ -41,6 +41,11 @@ export const MyTripDetails = () => {
     />
   );
 
+
+  useEffect(() => {
+    console.log(route.params.tripId);
+  }, []);
+
   return (
     <React.Fragment>
       <TabView
@@ -50,6 +55,20 @@ export const MyTripDetails = () => {
         initialLayout={initialLayout}
         renderTabBar={renderTabBar}
       />
+      <FAB
+        style={styles.fab}
+        icon="plus"
+        onPress={() => console.log({ index })}
+      />
     </React.Fragment>
   );
 };
+
+const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 50,
+  },
+})

@@ -20,7 +20,6 @@ const HomeScreen = ({ navigation }: Props) => {
     const user: Promise<User> = getUser();
     user.then((res) => {
       if (res) {
-        console.log("effect - " + res.name);
         navigation.navigate('FeedList');
       }
       else {

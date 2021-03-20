@@ -1,12 +1,13 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import { Appbar, Avatar, IconButton, useTheme } from 'react-native-paper';
+import { Appbar, IconButton, useTheme } from 'react-native-paper';
 import { Details } from '../../details';
-import { Trip } from '../../trip';
+import { MyTripDetails } from '../../myTripDetails';
+import { CreateTrip } from '../createTrip';
+import { CreateTripEvent } from '../createTripEvent';
 import ChooseLogin from '../login/ChooseLogin';
 import ForgotPasswordScreen from '../login/ForgotPasswordScreen';
 import HomeScreen from '../login/HomeScreen';
@@ -77,8 +78,8 @@ export const StackNavigator = () => {
                   //     color={theme.colors.primary}
                   //   />
                   // ) : (
-                      title
-                    // )
+                  title
+                  // )
                 }
                 titleStyle={{
                   fontSize: 18,
@@ -109,9 +110,21 @@ export const StackNavigator = () => {
       />
 
       <Stack.Screen
+        name="MyTripDetails"
+        component={MyTripDetails}
+        options={{ headerTitle: 'My Trip Details' }}
+      />
+
+      <Stack.Screen
         name="CreateTrip"
-        component={Trip}
+        component={CreateTrip}
         options={{ headerTitle: 'Create Trip' }}
+      />
+
+      <Stack.Screen
+        name="CreateTripEvent"
+        component={CreateTripEvent}
+        options={{ headerTitle: 'Create Event' }}
       />
 
       <Stack.Screen

@@ -32,17 +32,17 @@ export const Main = () => {
           theme === 'light'
             ? {
                 ...DefaultTheme,
-                roundness: 0,
+                roundness: 20,
                 colors: {
                   ...DefaultTheme.colors,
                   primary: '#46AF94',
-                  accent: '#414757',
+                  accent: '#4EC1A4',
                   error: '#f13a59',
                 },
               }
             : {
                 ...DarkTheme,
-                colors: { ...DarkTheme.colors, primary: '#1ba1f2' },
+                colors: { ...DarkTheme.colors, primary: '#4EC1A4' },
               }
         }
       >

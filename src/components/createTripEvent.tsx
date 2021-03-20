@@ -1,37 +1,56 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {
     Surface, TextInput
 } from 'react-native-paper';
-import { Trip } from '../models/trip';
-import { UserGoogle } from '../models/userGoogle';
-import { getSecureStore } from '../service/secureStore';
 import Button from './shared/Button';
-import { DateTime } from 'luxon';
 
-export const CreateTrip = () => {
-    const [trip, setTrip] = useState<Trip>(new Trip());
+type Props = {
+    id: number;
+    name: string;
+    handle: string;
+    date: string;
+    content: string;
+    image: string;
+    avatar: string;
+    comments: number;
+    retweets: number;
+    hearts: number;
+};
+
+export const CreateTripEvent = () => {
+    const navigation = useNavigation();
+
+    const [text, setText] = useState('');
     const [show, setShow] = useState(false);
     const [startDate, setStartDate] = useState(true);
 
     const minimumDate = useMemo(() => {
         const today = new Date();
+
+        if (today.getHours() >= 17) {
+            return new Date(today.setDate(today.getDate() + 1));
+        }
+
         return today;
     }, []);
 
-    const [selectedDate, setSelectedDate] = useState<Date>(minimumDate);
+    const [selectedDate, setSelectedDate] = useState(minimumDate);
+    const [textStartDate, setTextStartDate] = useState(null);
+    const [textEndDate, setTextEndDate] = useState(null);
 
-    const onChangeDate = (event, selectedDate: Date) => {
+    const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || minimumDate;
         setShow(Platform.OS === 'ios');
         setSelectedDate(currentDate);
 
         if (startDate) {
-            setTrip({ ...trip, startDate: DateTime.fromJSDate(currentDate).toFormat('dd/MM/yyyy')});
+            setTextStartDate(String(currentDate));
         } else {
-            setTrip({ ...trip, endDate: DateTime.fromJSDate(currentDate).toFormat('dd/MM/yyyy')});
+            setTextEndDate(String(currentDate));
         }
     };
 
@@ -40,10 +59,8 @@ export const CreateTrip = () => {
         setShow(true);
     };
 
-    const getUser = async () => {
-        const userData: UserGoogle = await getSecureStore("user");
-        console.log(userData);
-        console.log(trip);
+    const goToDetails = () => {
+        navigation.navigate("MyTripDetails");
     };
 
 
@@ -54,8 +71,8 @@ export const CreateTrip = () => {
                     style={styles.input}
                     label="País"
                     mode="outlined"
-                    value={trip.country}
-                    onChangeText={country => setTrip({ ...trip, country: country })}
+                    value={text}
+                    onChangeText={text => setText(text)}
                 />
                 <TouchableWithoutFeedback onPress={() => { openDate(true) }}>
                     <View pointerEvents="none">
@@ -63,7 +80,7 @@ export const CreateTrip = () => {
                             style={styles.input}
                             label="Start Date"
                             mode="outlined"
-                            value={trip.startDate}
+                            value={textStartDate}
                         />
                     </View>
                 </TouchableWithoutFeedback>
@@ -73,7 +90,7 @@ export const CreateTrip = () => {
                             style={styles.input}
                             label="End Date"
                             mode="outlined"
-                            value={trip.endDate}
+                            value={textEndDate}
                         />
                     </View>
                 </TouchableWithoutFeedback>
@@ -88,17 +105,8 @@ export const CreateTrip = () => {
                         minimumDate={minimumDate}
                     />)}
 
-                <TextInput
-                    style={styles.input}
-                    label="Note"
-                    mode="outlined"
-                    value={trip.note}
-                    multiline={true}
-                    onChangeText={note => setTrip({ ...trip, note: note })}
-                />
-
                 <Button
-                    onPress={() => { getUser() }}
+                    onPress={goToDetails}
                     mode="contained"
                 >
                     Save

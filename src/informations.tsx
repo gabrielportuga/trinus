@@ -76,6 +76,7 @@ export const Informations = (props: Props) => {
           </List.Accordion>
         </List.Section>
       </View>
+
     </Surface>
   );
 };

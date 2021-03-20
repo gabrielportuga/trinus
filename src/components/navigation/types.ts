@@ -1,18 +1,11 @@
+import { Trip } from "../../models/trip";
+
 export type StackNavigatorParamlist = {
   FeedList: undefined;
-  Details: {
-    id: number;
-    name: string;
-    handle: string;
-    date: string;
-    content: string;
-    image: string;
-    avatar: string;
-    comments: number;
-    retweets: number;
-    hearts: number;
-  };
-  CreateTrip: undefined;
+  Details: undefined;
+  CreateTrip: Trip;
+  MyTripDetails: undefined;
+  CreateTripEvent: undefined;
   HomeScreen: undefined;
   RegisterScreen: undefined;
   LoginScreen: undefined;

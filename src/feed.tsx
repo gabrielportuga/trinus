@@ -1,10 +1,11 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { StackNavigatorParamlist } from './components/navigation/types';
 import { TripFeed } from './components/tripFeed';
-import { twitts } from './data';
+import { Trip } from './models/trip';
+import api from './service/api';
 
 type TwittProps = React.ComponentProps<typeof TripFeed>;
 
@@ -22,26 +23,24 @@ type Props = {
 
 export const Feed = (props: Props) => {
   const theme = useTheme();
+  const [trips, setTrips] = useState<Trip[] | null>(null);
 
-  const data = twitts.map(twittProps => ({
-    ...twittProps,
-    onPress: () =>
-      props.navigation &&
-      props.navigation.push('Details', {
-        ...twittProps,
-      }),
-  }));
+  useEffect(() => {
+    api.get("trip").then((response) => {
+      setTrips(response.data);
+    });
+  }, []);
 
   return (
-    <FlatList
-      contentContainerStyle={{ backgroundColor: theme.colors.background }}
-      style={{ backgroundColor: theme.colors.background }}
-      data={data}
-      renderItem={renderItem}
-      keyExtractor={keyExtractor}
-      ItemSeparatorComponent={() => (
-        <View style={{ height: StyleSheet.hairlineWidth }} />
-      )}
-    />
+      <FlatList
+        contentContainerStyle={{ backgroundColor: theme.colors.background }}
+        style={{ backgroundColor: theme.colors.background }}
+        data={trips}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        ItemSeparatorComponent={() => (
+          <View style={{ height: StyleSheet.hairlineWidth }} />
+        )}
+      />
   );
 };

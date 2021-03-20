@@ -1,8 +1,10 @@
-import React from 'react';
+import { DateTime } from 'luxon';
+import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { TripPlans } from './components/tripPlans';
 import { notificationTweets } from './data';
+import { months } from './utils/dateFunctions';
 
 
 type TripPlansProps = React.ComponentProps<typeof TripPlans>;
@@ -17,6 +19,12 @@ function keyExtractor(item: TripPlansProps) {
 
 export const Events = () => {
   const theme = useTheme();
+
+  useEffect(() => {
+    console.log('Agrupar meses');
+    const meses: any[] = months(DateTime.now(), DateTime.now().plus({months: 12}));
+    console.log(meses);
+  }, []);
 
   return (
     <FlatList

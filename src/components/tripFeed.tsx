@@ -1,30 +1,20 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/core';
 import color from 'color';
+import { DateTime } from 'luxon';
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
-  Avatar, Caption, Surface,
+  Avatar, Caption, Subheading, Surface,
   Text, Title,
   TouchableRipple,
   useTheme
 } from 'react-native-paper';
+import { Trip } from '../models/trip';
 
-type Props = {
-  id: number;
-  name: string;
-  handle: string;
-  date: string;
-  content: string;
-  image: string;
-  avatar: string;
-  comments: number;
-  retweets: number;
-  hearts: number;
-  onPress: (id: number) => void;
-};
-
-export const TripFeed = (props: Props) => {
+export const TripFeed = (props: Trip)  => {
   const theme = useTheme();
+  const navigation = useNavigation();
 
   const iconColor = color(theme.colors.text)
     .alpha(0.54)
@@ -41,21 +31,36 @@ export const TripFeed = (props: Props) => {
     .rgb()
     .string();
 
+  const getRandomColor = () => {
+    return 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
+  }
+
+  const onPress = () => {
+    navigation.navigate("MyTripDetails", {trip: props});
+  }
+
   return (
-    <TouchableRipple onPress={() => props.onPress(props.id)}>
+    <TouchableRipple onPress={() => onPress()}>
       <Surface style={styles.container}>
+
         <View style={styles.leftColumn}>
-          <Avatar.Image source={{ uri: props.avatar }} size={60} />
+          {(props.user && props.user.photoUrl) ?
+            <Avatar.Image source={{ uri: props.user.photoUrl }} size={50} /> :
+            <Avatar.Text style={{ backgroundColor: getRandomColor() }} size={50} label={props.user.name.substr(0, 1).toUpperCase()} />
+          }
         </View>
+
         <View style={styles.rightColumn}>
+          <Title>{props.user.name}</Title>
           <View style={styles.topRow}>
-            <Title>{props.name}</Title>
-            <Caption style={styles.handle}>{props.handle}</Caption>
-            <Caption style={[styles.handle, styles.dot]}>{'\u2B24'}</Caption>
-            <Caption>{props.date}</Caption>
+            <Subheading>{props.name}</Subheading>
+            <Subheading style={[styles.handle, styles.dot]}>{'\u2B24'}</Subheading>
+            <Subheading style={styles.handle}>{props.country}</Subheading>
           </View>
-          <Text style={{ color: contentColor }}>{props.content}</Text>
-          <Image
+          <Caption>{DateTime.fromISO(props.startDate).toFormat('dd/MM/yyyy')} - {DateTime.fromISO(props.endDate).toFormat('dd/MM/yyyy')}</Caption>
+          <Text style={{ color: contentColor }}>{props.note}</Text>
+
+          {/* <Image
             source={{ uri: props.image }}
             style={[
               styles.image,
@@ -63,49 +68,49 @@ export const TripFeed = (props: Props) => {
                 borderColor: imageBorderColor,
               },
             ]}
-          />
+          /> */}
           <View style={styles.bottomRow}>
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => { }}
               hitSlop={{ top: 10, bottom: 10 }}
             >
               <View style={styles.iconContainer}>
                 <MaterialCommunityIcons
                   name="comment-outline"
-                  size={12}
+                  size={16}
                   color={iconColor}
                 />
                 <Caption style={styles.iconDescription}>
-                  {props.comments}
+                  1
                 </Caption>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => { }}
               hitSlop={{ top: 10, bottom: 10 }}
             >
               <View style={styles.iconContainer}>
                 <MaterialCommunityIcons
                   name="share-outline"
-                  size={14}
+                  size={16}
                   color={iconColor}
                 />
                 <Caption style={styles.iconDescription}>
-                  {props.retweets}
+                  2
                 </Caption>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => { }}
               hitSlop={{ top: 10, bottom: 10 }}
             >
               <View style={styles.iconContainer}>
                 <MaterialCommunityIcons
                   name="heart-outline"
-                  size={12}
+                  size={16}
                   color={iconColor}
                 />
-                <Caption style={styles.iconDescription}>{props.hearts}</Caption>
+                <Caption style={styles.iconDescription}>3</Caption>
               </View>
             </TouchableOpacity>
           </View>
@@ -119,10 +124,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingTop: 15,
-    paddingRight: 15,
+    paddingRight: 20,
   },
   leftColumn: {
-    width: 100,
+    width: 80,
     alignItems: 'center',
   },
   rightColumn: {
@@ -133,6 +138,7 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   handle: {
+    marginLeft: 3,
     marginRight: 3,
   },
   dot: {
@@ -152,11 +158,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   iconContainer: {
+    marginTop: 2,
     flexDirection: 'row',
     alignItems: 'center',
   },
   iconDescription: {
     marginLeft: 2,
-    lineHeight: 12,
+    lineHeight: 15,
   },
 });

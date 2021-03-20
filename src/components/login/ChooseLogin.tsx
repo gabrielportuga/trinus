@@ -7,6 +7,7 @@ import Logo from '../shared/Logo';
 import Paragraph from '../shared/Paragraph';
 import { Navigation } from '../navigation/types';
 import { saveSecureStore } from '../../service/secureStore';
+import { theme } from '../../core/theme';
 
 type Props = {
   navigation: Navigation;
@@ -22,10 +23,7 @@ const ChooseLogin = ({ navigation }: Props) => {
       });
 
       if (result.type === 'success') {
-        console.log(result.user);
-
         saveSecureStore("user", JSON.stringify(result.user));
-
         navigation.navigate('FeedList');
       } else {
         return { cancelled: true };
@@ -50,7 +48,7 @@ const ChooseLogin = ({ navigation }: Props) => {
         </Button>
 
       <Button
-        mode="outlined"
+        mode="outlined" color={theme.colors.accent}
         onPress={() => navigation.navigate('RegisterScreen')}
       >
         Sign Up

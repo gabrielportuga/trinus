@@ -46,7 +46,7 @@ export const BottomTabs = (props: Props) => {
   return (
     <React.Fragment>
       <Tab.Navigator
-        initialRouteName="Feed"
+        initialRouteName="Trip around"
         backBehavior="initialRoute"
         shifting={true}
         activeColor={theme.colors.primary}

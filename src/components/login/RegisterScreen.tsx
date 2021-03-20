@@ -93,7 +93,7 @@ const RegisterScreen = ({ navigation }: Props) => {
 
 const styles = StyleSheet.create({
   label: {
-    color: theme.colors.secondary,
+    color: theme.colors.accent,
   },
   button: {
     marginTop: 24,
