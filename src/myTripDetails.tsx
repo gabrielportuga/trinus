@@ -35,8 +35,10 @@ export const MyTripDetails = ({ navigation, route }) => {
     <TabBar
       {...props}
       indicatorStyle={{ backgroundColor: theme.colors.primary }}
-      style={{ backgroundColor: tabBarColor, shadowColor: theme.colors.text }}
+      style={{ backgroundColor: tabBarColor, shadowColor: theme.colors.text,  }}
       labelStyle={{ color: theme.colors.primary }}
+      activeColor={theme.colors.primary}
+      inactiveColor={theme.colors.accent}
       pressColor={rippleColor}
     />
   );

@@ -22,8 +22,10 @@ export const Events = () => {
 
   useEffect(() => {
     console.log('Agrupar meses');
-    //const meses: any[] = months(DateTime.now(), DateTime.now().plus({months: 12}));
-    //console.log(meses);
+    console.log(DateTime.now().plus({months: 12}));
+    console.log(Math.round(DateTime.now().plus({months: 12}).diff(DateTime.now(), 'months').months));
+    const meses: any[] = months(DateTime.now(), DateTime.now().plus({months: 12}));
+    console.log(meses);
   }, []);
 
   return (

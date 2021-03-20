@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { Alert, BackHandler, FlatList, StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { StackNavigatorParamlist } from './components/navigation/types';
 import { TripFeed } from './components/tripFeed';
@@ -17,13 +17,36 @@ function keyExtractor(item: TwittProps) {
   return item.id.toString();
 }
 
-type Props = {
-  navigation?: StackNavigationProp<StackNavigatorParamlist>;
-};
 
-export const Feed = (props: Props) => {
+export const Feed = ({ navigation }) => {
   const theme = useTheme();
   const [trips, setTrips] = useState<Trip[] | null>(null);
+  const [text, setText] = React.useState('');
+  const hasUnsavedChanges = Boolean(text);
+
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', (e) => {
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+
+        // Prompt the user before leaving the screen
+        Alert.alert(
+          "Exit App",
+          "Do you want to exit?",
+          [
+            {
+              text: "No",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "Yes", onPress: () => BackHandler.exitApp() }
+          ],
+          { cancelable: false }
+        );
+      }),
+    [navigation, hasUnsavedChanges]
+  );
 
   useEffect(() => {
     api.get("trip").then((response) => {
@@ -32,15 +55,15 @@ export const Feed = (props: Props) => {
   }, []);
 
   return (
-      <FlatList
-        contentContainerStyle={{ backgroundColor: theme.colors.background }}
-        style={{ backgroundColor: theme.colors.background }}
-        data={trips}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        ItemSeparatorComponent={() => (
-          <View style={{ height: StyleSheet.hairlineWidth }} />
-        )}
-      />
+    <FlatList
+      contentContainerStyle={{ backgroundColor: theme.colors.background }}
+      style={{ backgroundColor: theme.colors.background }}
+      data={trips}
+      renderItem={renderItem}
+      keyExtractor={keyExtractor}
+      ItemSeparatorComponent={() => (
+        <View style={{ height: StyleSheet.hairlineWidth }} />
+      )}
+    />
   );
 };

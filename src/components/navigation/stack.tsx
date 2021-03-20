@@ -98,7 +98,7 @@ export const StackNavigator = () => {
         name="FeedList"
         component={BottomTabs}
         options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+          const routeName = getFocusedRouteNameFromRoute(route) ?? 'Trip around';
           return { headerTitle: routeName };
         }}
       />

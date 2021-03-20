@@ -2,23 +2,23 @@ import { DateTime } from 'luxon';
 
 export const months = (dateStart: DateTime, dateEnd: DateTime): any[] => {
     const months = [];
-        
-    console.log(dateEnd.diff(dateStart, 'months').months);
-    while (dateEnd.diff(dateStart, 'months').months >= 0) {
-        months.push(dateStart.toFormat('MM'))
-        dateStart.plus({ months: 1 });
-    }
+    let date = dateStart;
 
+    while (Math.round(dateEnd.diff(date, 'months').months) >= 0) {
+        console.log(Math.round(dateEnd.diff(date, 'months').months));
+        months.push(date.toFormat('yyyy/MM'))
+        date = date.plus({ months: 1 });
+    }
     return months;
 }
 
 export const days = (dateStart: DateTime, dateEnd: DateTime): any[] => {
-    const days = []
-    console.log(dateEnd.diff(dateStart, 'days').days);
+    const days = [];
+    let date = dateStart;
 
-    while (dateEnd.diff(dateStart, 'days').days >= 0) {
-        days.push(dateStart.toFormat('dd'))
-        dateStart.plus({ days: 1 });
+    while (Math.round(dateEnd.diff(date, 'days').days) >= 0) {
+        days.push(date.toFormat('yyyy/MM/dd'))
+        date = date.plus({ months: 1 });
     }
     return days;
 }

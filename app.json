@@ -27,7 +27,6 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFF"
       }
-    },
-    "sdkVersion": "41.0.0"
+    }
   }
 }
